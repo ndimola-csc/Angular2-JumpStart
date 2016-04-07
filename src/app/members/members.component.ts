@@ -1,39 +1,39 @@
 import { Component } from 'angular2/core';
 import { RouterLink } from 'angular2/router';
-//import { Observable } from 'rxjs/Observable';
 import { DataService } from '../shared/services/data.service';
 import { Sorter } from '../shared/sorter';
 import { FilterTextboxComponent } from './filterTextbox.component';
 import { SortByDirective } from '../shared/directives/sortby.directive';
 import { CapitalizePipe } from '../shared/pipes/capitalize.pipe';
+import { CapitalizeAllPipe } from '../shared/pipes/tocaps.pipe';
 import { TrimPipe } from '../shared/pipes/trim.pipe';
 
 @Component({ 
-  selector: 'customers', 
+  selector: 'members', 
   providers: [DataService],
-  templateUrl: 'app/customers/customers.component.html',
+  templateUrl: 'app/members/members.component.html',
   directives: [RouterLink, FilterTextboxComponent, SortByDirective],
-  pipes: [CapitalizePipe, TrimPipe]
+  pipes: [CapitalizePipe, TrimPipe, CapitalizeAllPipe]
 })
-export class CustomersComponent {
+export class MembersComponent {
 
   title: string;
   filterText: string;
   listDisplayModeEnabled: boolean;
-  customers: any[] = [];
-  filteredCustomers: any[] = [];
+  members: any[] = [];
+  filteredMembers: any[] = [];
   sorter: Sorter;
 
   constructor(private dataService: DataService) { }
   
   ngOnInit() {
-    this.title = 'Customers';
-    this.filterText = 'Filter Customers:';
+    this.title = 'Members';
+    this.filterText = 'Filter Members:';
     this.listDisplayModeEnabled = false;
 
-    this.dataService.getCustomers()
-        .subscribe((customers:any[]) => {
-          this.customers = this.filteredCustomers = customers;
+    this.dataService.getMembers()
+        .subscribe((members:any[]) => {
+          this.members = this.filteredMembers = members;
         });
 
     this.sorter = new Sorter();
@@ -44,10 +44,10 @@ export class CustomersComponent {
   }
 
   filterChanged(data: string) {
-    if (data && this.customers) {
+    if (data && this.members) {
         data = data.toUpperCase();
-        let props = ['firstName', 'lastName', 'address', 'city', 'orderTotal'];
-        let filtered = this.customers.filter(item => {
+        let props = ['firstName', 'lastName', 'address', 'city', 'state', 'zip'];
+        let filtered = this.members.filter(item => {
             let match = false;
             for (let prop of props) {
                 //console.log(item[prop] + ' ' + item[prop].toUpperCase().indexOf(data));
@@ -58,14 +58,14 @@ export class CustomersComponent {
             };
             return match;
         });
-        this.filteredCustomers = filtered;
+        this.filteredMembers = filtered;
     }
     else {
-      this.filteredCustomers = this.customers;
+      this.filteredMembers = this.members;
     }
   }
 
-  deleteCustomer(id: number) {
+  deleteMember(id: number) {
 
   }
 
@@ -74,7 +74,7 @@ export class CustomersComponent {
       if (prop && prop.indexOf('.')) {
         
       }
-      this.sorter.sort(this.filteredCustomers, prop);
+      this.sorter.sort(this.filteredMembers, prop);
   }
 
 }

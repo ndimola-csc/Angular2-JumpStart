@@ -1,0 +1,23 @@
+ <h3><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;&nbsp;Claims</h3>
+
+<br />
+<table class="table table-striped table-hover">
+	<thead>
+        <tr>
+            <th sort-by="claimId" (sorted)="sort($event)">ID</th>
+            <th sort-by="claimDescription" (sorted)="sort($event)">Description</th>
+            <th (click)="sort('amount')">Claim Total</th>
+        </tr>
+    </thead>
+	<tbody>
+	    <tr *ngFor="#claim of filteredClaims">
+	    	<td>{{claim.claimId}}</td>
+	        <td>{{claim.claimDescription}}</td>
+	        <td>${{claim.amount}}</td>    
+	    </tr>
+	</tbody>
+</table>
+
+<br />
+
+<a href="#" [routerLink]="['Members']" router-params="">View all Members</a>
